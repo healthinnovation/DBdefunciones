@@ -1,0 +1,5 @@
+# Ignore Rproject
+*.Rhistory
+*.Rproj.user
+*.Rproj
+.Rproj.user
