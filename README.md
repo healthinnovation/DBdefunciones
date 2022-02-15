@@ -1,2 +1,2 @@
-# DB_defunciones
-Base de datos a nivel distrital de defunciones - SINADEF
+# **DBdefunciones**
+Base de datos a nivel distrital de defunciones - SINADEF (2017-2022)
