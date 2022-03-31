@@ -1,7 +1,7 @@
 name: scraper portal abierto
 on:
  schedule:
-  - cron : 55 13 * * * 
+  - cron : 0 14,2 * * * 
   
 
 jobs: 
