@@ -1,0 +1,38 @@
+name: scraper portal abierto
+on: [push]
+ schedule:
+  - cron : 0 15 * * * 
+  
+
+jobs: 
+  autoscrape:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - uses: r-lib/actions/setup-r@master
+    - uses: actions/cache@v2
+      with:
+       path: ~/.local/share/renv
+       key: ${{ runner.os }}-renv-${{ hashFiles('**/renv.lock') }}
+       restore-keys: |
+           ${{ runner.os }}-renv-
+    - name: Install packages
+      run: |
+        R -e 'install.packages("tidyverse")'
+        R -e 'install.packages("vroom")'
+        R -e 'install.packages("Rcurl")'
+    # Run R script
+    - name: Scrape
+      run: Rscript ./datos_abiertos/00_get_data.R
+   
+    - name: Commit files
+      run: |
+        today=$(date +"%Y-%m-%d")
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add data/*
+        git commit -m "updated datasets ${today}"
+        git push origin main
+      env:
+        REPO_KEY: ${{secrets.GITHUB_TOKEN}}
+        username: github-actions
