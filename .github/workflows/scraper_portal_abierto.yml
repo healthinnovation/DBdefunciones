@@ -36,7 +36,7 @@ jobs:
         git config --local user.name "GitHub Action"
         git add datos_abiertos/data/*
         git commit -m "updated datasets ${today}"
-        git push origin main
+        git push -f -u origin main
       env:
         REPO_KEY: ${{secrets.GITHUB_TOKEN}}
         username: github-actions
