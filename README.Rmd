@@ -1,0 +1,41 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE,message=FALSE,warning=FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+library(tidyverse)
+library(lubridate)
+```
+
+# **DBdefunciones**
+
+<!-- badges: start -->
+[![R-CMD-check](https://github.com/healthinnovation/DBdefunciones/workflows/R-CMD-check/badge.svg)](https://github.com/healthinnovation/DBdefunciones/actions)
+<!-- badges: end -->
+
+Base de datos a nivel distrital de defunciones - SINADEF (2017-2022)
+
+
+```{r tile,echo=FALSE,message=FALSE,warning=FALSE}
+data <- read_rds("datos_abiertos/data/defunciones.rds")
+newdata <- data %>%
+  select(DEPARTAMENTO,FECHA) %>%
+  mutate(anio = year(FECHA),mes = month(FECHA) %>% factor(labels = month.abb)) %>% 
+  group_by(DEPARTAMENTO,anio, mes) %>% 
+  summarise(total = n()) %>% 
+  filter(DEPARTAMENTO != "")
+p1 <- newdata %>% 
+  filter(DEPARTAMENTO == "LIMA") %>% 
+  ggplot(aes(x = mes,y = anio, fill = total)) + 
+  geom_tile() + 
+  labs(x = "", y = "",title = sprintf("LIMA-(%s%s",Sys.Date(),")")) +
+  theme_minimal() + 
+  scale_fill_viridis_c(option = "inferno",direction = -1)
+p1
+```
