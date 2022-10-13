@@ -2,12 +2,12 @@ library(purrr)
 library(dplyr)
 library(vroom)
 
-
 download.file(
-  url = "https://cloud.minsa.gob.pe/s/nqF2irNbFomCLaa/download",
+  url = "https://drive.minsa.gob.pe/s/XJoxGPW2wBmkSAD/download",
   destfile = "./datos_abiertos/data/defunciones.csv",
   method = 'curl'
 )
+
 
 defunciones <- vroom("datos_abiertos/data/defunciones.csv",
   col_types = cols(
