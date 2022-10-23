@@ -1,3 +1,6 @@
+install.packages("purrr")
+install.packages("dplyr")
+install.packages("vroom")
 library(purrr)
 library(dplyr)
 library(vroom)
