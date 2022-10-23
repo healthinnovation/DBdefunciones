@@ -6,37 +6,25 @@ on:
       
  schedule:
   - cron : 0 14 * * * 
-  
 
-jobs: 
-  autoscrape:
+jobs:
+  run-r-script:
     runs-on: ubuntu-latest
+    env: 
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
     steps:
-    - uses: actions/checkout@master
-    - uses: r-lib/actions/setup-r@master
-    - uses: actions/cache@v2
-      with:
-       path: ~/.local/share/renv
-       key: ${{ runner.os }}-renv-${{ hashFiles('**/renv.lock') }}
-       restore-keys: |
-           ${{ runner.os }}-renv-
-    - name: Install packages
-      run: |
-        R -e 'install.packages("tidyverse")'
-        R -e 'install.packages("vroom")'
-        R -e 'install.packages("Rcurl")'
-    # Run R script
-    - name: Scrape
-      run: Rscript ./datos_abiertos/00_get_data.R
-   
-    - name: Commit files
-      run: |
-        today=$(date +"%Y-%m-%d")
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-        git add datos_abiertos/data/*
-        git commit -am "updated datasets ${today}"
-        git push origin main
-      env:
-        REPO_KEY: ${{secrets.GITHUB_TOKEN}}
-        username: github-actions
+      - uses: actions/checkout@v3
+      - uses: r-lib/actions/setup-r@v2
+        with: 
+          use-public-rspm: true
+
+      - name: run-script
+        run: Rscript datos_abiertos/00_get_data.R
+        
+      - name: commit files
+        run: |
+          today=$(date +"%Y-%m-%d")
+          git config --local user.name "$GITHUB_ACTOR"
+          git config --local user.email "$GITHUB_ACTOR@users.noreply.github.com"
+          git add datos_abiertos/data/*
+          git commit -m "updated datasets ${today}" -a
