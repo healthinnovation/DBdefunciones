@@ -6,7 +6,7 @@ library(dplyr)
 library(vroom)
 
 download.file(
-  url = "https://drive.minsa.gob.pe/s/XJoxGPW2wBmkSAD/download",
+  url = "https://drive.minsa.gob.pe/s/PigmdwnCGEdyqos/download",
   destfile = "./datos_abiertos/data/defunciones.csv",
   method = 'curl'
 )
